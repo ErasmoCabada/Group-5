@@ -103,6 +103,30 @@ Each test should include:
 # Student 2: Test invalid email input
 # - Ensure invalid email formats raise a validation error.
 # Target Method: validate_email()
+# ===========================
+# Test: Password hashing test
+# Author: Ernesto Lara
+# Date: 2026-02-12
+# Description: Ensure valid email formats do not raise an error and invalid formats do
+# ===========================
+
+def test_invalid_email_input():
+    # Test invalid email format
+    accountGood = Account(email="Good@example.com")
+    accountBad1 = Account(email="Bad@examplecom")
+    accountBad2 = Account(email="Badexample.com")
+
+    # Chech that valid emails work
+    accountGood.validate_email()
+
+    # Bad email format should raise an error
+    with pytest.raises(DataValidationError):
+        accountBad1.validate_email()
+
+    # Bad email format should raise an error
+    with pytest.raises(DataValidationError):
+        accountBad2.validate_email()
+
 
 # Student 3: Test missing required fields
 # - Ensure account initialization fails when required fields are missing.
@@ -147,10 +171,10 @@ def test_password_hashing():
     assert account.password_hash != "password"
 
     #test if the password verification is functioning
-    assert account.check_password("password") is True
+    assert account.check_password("password") == True
 
     #test if inputting an incorrect password functions
-    assert account.check_password("notpassword") is False
+    assert account.check_password("notpassword") == False
         
 
 # Student 9: Test account deactivation/reactivation
