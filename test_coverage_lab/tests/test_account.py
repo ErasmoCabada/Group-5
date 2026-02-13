@@ -144,7 +144,7 @@ def test_password_hashing():
     assert account.password_hash is not None
 
     #test if the password is hashed
-    assert account.password_hash != "password" is True
+    assert account.password_hash != "password"
 
     #test if the password verification is functioning
     assert account.check_password("password") is True
