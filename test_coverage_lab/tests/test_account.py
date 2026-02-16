@@ -185,6 +185,15 @@ def test_deposit_zero_and_negative_amount():
 # Student 6: Test valid withdrawal
 # - Verify that withdrawing a valid amount correctly decreases the balance.
 # Target Method: withdraw()
+def test_valid_withdrawal():
+    """Test withdrawing a valid amount decreases balance"""
+    account = Account(name="Test User", email="test@example.com", role="user", balance=100.0)
+    
+    assert account.balance == 100.0
+    
+    account.withdraw(30.0)
+    
+    assert account.balance == 70.0
 
 # Student 7: Test withdrawal with insufficient funds
 # - Ensure withdrawal fails when balance is insufficient.
