@@ -6,6 +6,7 @@ from random import randrange
 import pytest
 from models import db
 from models.account import Account, DataValidationError
+from sqlalchemy.exc import IntegrityError
 
 ACCOUNT_DATA = {}
 
@@ -264,6 +265,35 @@ def test_password_hashing():
 # Student 10: Test email uniqueness enforcement
 # - Ensure duplicate emails are not allowed.
 # Target Method: validate_unique_email()
+# ===========================
+# Test: Email Uniqueness Enforcement
+# Author: Erasmo Cabada
+# Date: 2026-02-16
+# Description: Ensure emails are unique from one another.
+# ===========================
+
+def test_email_uniqueness_enforcement():
+    """Test that duplicate emails are not allowed"""
+    # Create account with email
+    accountOne = Account(name="First User", email="unique@example.com",role="user")
+    db.session.add(accountOne)
+    db.session.commit()
+    
+    # Attempt to create account with same email
+    accountTwo = Account(name="Second User", email="unique@example.com",role="admin")
+    
+    # A validation error/exception should be raised since we have duplicate emails
+    with pytest.raises(IntegrityError):
+        db.session.add(accountTwo)
+        db.session.commit()  
+        
+    db.session.rollback()
+        
+    # Verify only one account exists with this email
+    accounts = Account.query.filter_by(email="unique@example.com").all()
+    assert len(accounts) == True
+    assert accounts[0].name == "First User"
+     
 
 # Student 11: Test deleting an account
 # - Verify that an account can be successfully deleted from the database.
