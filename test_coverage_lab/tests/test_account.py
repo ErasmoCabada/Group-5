@@ -287,7 +287,7 @@ def test_email_uniqueness_enforcement():
         db.session.add(accountTwo)
         db.session.commit()  
         
-    db.session.rollback()
+    db.session.rollback() # rollback failed transaction
         
     # Verify only one account exists with this email
     accounts = Account.query.filter_by(email="unique@example.com").all()
